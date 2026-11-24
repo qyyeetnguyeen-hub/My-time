@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101827">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="MY TIME">
+<link rel="manifest" href="manifest.webmanifest">
+<title>MY TIME</title>
+<style>
+:root{--bg:#f4f6fa;--card:#fff;--ink:#172033;--muted:#7d8798;--line:#e9edf3;--accent:#536dfe;--accent2:#e9edff;--green:#16a477;--orange:#f0a33a;--shadow:0 8px 28px #1a2b4810}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding-bottom:calc(88px + env(safe-area-inset-bottom))}
+header{background:#101827;color:white;padding:22px 20px 25px;border-radius:0 0 26px 26px}
+.top{display:flex;justify-content:space-between;align-items:center}.brand{font-size:19px;font-weight:850;letter-spacing:1.5px}.date{font-size:12px;color:#b9c4d8;margin-top:5px}.avatar{width:38px;height:38px;border-radius:14px;background:#273653;display:grid;place-items:center;font-weight:700}
+h1{font-size:25px;margin:23px 0 5px}header p{margin:0;color:#bdc8d9;font-size:13px}
+.wrap{padding:17px 16px;max-width:680px;margin:auto}.stats{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:-1px}.card{background:var(--card);border-radius:18px;padding:16px;box-shadow:var(--shadow);border:1px solid #eef1f6}.statnum{font-size:26px;font-weight:800;margin-top:7px}.muted{color:var(--muted);font-size:12px}.sectionhead{display:flex;align-items:center;justify-content:space-between;margin:23px 2px 11px}.sectionhead h2{font-size:17px;margin:0}.link{border:0;background:none;color:var(--accent);font-weight:700;font-size:13px}
+.progress{height:8px;background:#edf0f6;border-radius:9px;overflow:hidden;margin-top:12px}.progress span{display:block;height:100%;background:var(--accent);border-radius:9px;width:0}
+.item{display:flex;gap:11px;align-items:center;padding:13px 0;border-bottom:1px solid var(--line)}.item:last-child{border:0}.check{width:22px;height:22px;border:1.7px solid #cbd2df;border-radius:8px;flex:none;background:white;color:white}.check.done{background:var(--green);border-color:var(--green)}.itemmain{flex:1;min-width:0}.itemtitle{font-weight:650}.itemtitle.done{text-decoration:line-through;color:#9aa3b2}.meta{font-size:11px;color:var(--muted);margin-top:4px}.pill{font-size:10px;padding:5px 8px;border-radius:20px;background:var(--accent2);color:#5268e9;white-space:nowrap}
+nav{position:fixed;bottom:0;left:0;right:0;background:#ffffffed;backdrop-filter:blur(16px);border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:9px 5px calc(9px + env(safe-area-inset-bottom));z-index:5}
+nav button{border:0;background:none;color:#8b95a5;font-size:10px;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:54px}nav button b{font-size:20px;font-weight:500}nav button.active{color:var(--accent);font-weight:800}
+.page{display:none}.page.active{display:block}
+button.primary{border:0;background:var(--accent);color:white;border-radius:13px;padding:12px 15px;font-weight:750}
+button.soft{border:0;background:var(--accent2);color:var(--accent);border-radius:12px;padding:10px 12px;font-weight:700}
+input,select,textarea{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;background:#fbfcfe;color:var(--ink);font:inherit;margin:5px 0 12px;outline:none}
+label{font-size:12px;color:var(--muted);font-weight:700}
+.row{display:flex;gap:9px}.row>*{flex:1}
+.empty{text-align:center;padding:22px;color:var(--muted);font-size:13px}
+.taskform{display:flex;gap:8px}.taskform input{margin:0}.taskform button{white-space:nowrap}
+.daygrid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}.day{border:0;border-radius:12px;padding:10px 0;background:#f3f5fa;color:#647087;font-size:12px}.day.sel{background:var(--accent);color:white}
+.timer{text-align:center;padding:26px 10px}.clock{font-size:58px;font-weight:800;letter-spacing:-2px;margin:16px 0}.timerbtns{display:flex;justify-content:center;gap:9px;margin-top:16px}
+.goal{margin:12px 0}.goalhead{display:flex;justify-content:space-between;gap:8px;font-weight:650;font-size:13px}.goal .progress{margin-top:8px}
+.smallbtn{border:0;background:none;color:#9aa3b2;font-size:18px;padding:2px 7px}
+.note{background:#f7f8fc;border-radius:13px;padding:12px;color:#69758a;font-size:12px;line-height:1.5;margin-top:14px}
+@media(min-width:600px){header{padding-left:max(22px,calc((100% - 640px)/2));padding-right:max(22px,calc((100% - 640px)/2))}.wrap{padding-top:24px}}
+</style>
+</head>
+<body>
+<header><div class="top"><div><div class="brand">MY TIME <span style="color:#8ea0ff">●</span></div><div class="date" id="todayDate"></div></div><div class="avatar">MT</div></div><h1 id="greeting">Chào bạn 👋</h1><p>Chủ động thời gian, tiến gần mục tiêu.</p></header>
+<main class="wrap">
+<section class="page active" id="home">
+ <div class="stats">
+  <div class="card"><div class="muted">Công việc hôm nay</div><div class="statnum" id="taskCount">0/0</div><div class="muted">đã hoàn thành</div></div>
+  <div class="card"><div class="muted">Tiến độ hôm nay</div><div class="statnum" id="percent">0%</div><div class="progress"><span id="progressBar"></span></div></div>
+ </div>
+ <div class="sectionhead"><h2>Việc cần làm</h2><button class="link" onclick="showPage('tasks')">Xem tất cả →</button></div>
+ <div class="card" id="homeTasks"></div>
+ <div class="sectionhead"><h2>Lịch hôm nay</h2><button class="link" onclick="showPage('schedule')">Thời khóa biểu →</button></div>
+ <div class="card" id="homeSchedule"></div>
+ <div class="note">💡 Mẹo nhỏ: Chọn 1–3 việc quan trọng nhất trong ngày và hoàn thành chúng trước.</div>
+</section>
+<section class="page" id="tasks">
+ <div class="sectionhead"><h2>Danh sách công việc</h2></div>
+ <div class="card">
+  <label>TÊN CÔNG VIỆC</label><div class="taskform"><input id="taskInput" placeholder="Ví dụ: Ôn Toán 45 phút"><button class="primary" onclick="addTask()">Thêm</button></div>
+  <div class="row"><div><label>NGÀY</label><input type="date" id="taskDate"></div><div><label>THỜI GIAN</label><input type="time" id="taskTime"></div></div>
+  <label>NHÓM</label><select id="taskCategory"><option>Học tập</option><option>Cá nhân</option><option>Gia đình</option><option>Khác</option></select>
+ </div>
+ <div class="sectionhead"><h2>Công việc của bạn</h2><button class="link" onclick="clearDone()">Xóa việc đã xong</button></div>
+ <div class="card" id="allTasks"></div>
+</section>
+<section class="page" id="schedule">
+ <div class="sectionhead"><h2>Thời khóa biểu tuần</h2></div>
+ <div class="card">
+  <label>CHỌN NGÀY</label><div class="daygrid" id="dayGrid"></div>
+  <div class="sectionhead"><h2 id="scheduleDay">Thứ Hai</h2></div>
+  <label>TÊN HOẠT ĐỘNG</label><input id="eventName" placeholder="Ví dụ: Học tiếng Trung">
+  <div class="row"><div><label>BẮT ĐẦU</label><input type="time" id="eventStart" value="17:00"></div><div><label>KẾT THÚC</label><input type="time" id="eventEnd" value="18:00"></div></div>
+  <button class="primary" style="width:100%" onclick="addEvent()">Thêm vào thời khóa biểu</button>
+ </div>
+ <div class="card" id="eventsList" style="margin-top:12px"></div>
+</section>
+<section class="page" id="focus">
+ <div class="sectionhead"><h2>Tập trung</h2><span class="pill">Pomodoro</span></div>
+ <div class="card timer">
+  <div class="muted" id="timerMode">PHIÊN TẬP TRUNG</div><div class="clock" id="clock">25:00</div>
+  <div class="muted">Tập trung vào một việc tại một thời điểm.</div>
+  <div class="timerbtns"><button class="soft" onclick="resetTimer()">Đặt lại</button><button class="primary" id="timerToggle" onclick="toggleTimer()">Bắt đầu</button></div>
+  <div class="row" style="margin-top:20px"><button class="soft" onclick="setTimer(25,'Tập trung')">25 phút</button><button class="soft" onclick="setTimer(5,'Nghỉ ngắn')">Nghỉ 5 phút</button><button class="soft" onclick="setTimer(15,'Nghỉ dài')">Nghỉ 15 phút</button></div>
+ </div>
+ <div class="note">Khi hết giờ, ứng dụng sẽ báo trong lúc đang mở. iPhone có thể hạn chế bộ đếm chạy nền khi bạn đóng ứng dụng.</div>
+</section>
+<section class="page" id="goals">
+ <div class="sectionhead"><h2>Mục tiêu của tôi</h2></div>
+ <div class="card">
+  <label>TÊN MỤC TIÊU</label><input id="goalInput" placeholder="Ví dụ: Hoàn thành 5 buổi Toán/tuần">
+  <label>MỤC TIÊU ĐỊNH LƯỢNG</label><input id="goalTarget" type="number" min="1" value="5">
+  <button class="primary" style="width:100%" onclick="addGoal()">Tạo mục tiêu</button>
+ </div>
+ <div class="card" id="goalsList" style="margin-top:12px"></div>
+</section>
+<section class="page" id="stats">
+ <div class="sectionhead"><h2>Thống kê</h2></div>
+ <div class="stats">
+  <div class="card"><div class="muted">Tổng công việc</div><div class="statnum" id="totalStat">0</div></div>
+  <div class="card"><div class="muted">Đã hoàn thành</div><div class="statnum" id="doneStat">0</div></div>
+ </div>
+ <div class="sectionhead"><h2>Tiến độ mục tiêu</h2></div><div class="card" id="statsGoals"></div>
+ <div class="note">Số liệu được tính từ dữ liệu bạn lưu trong MY TIME trên thiết bị này.</div>
+ <div class="sectionhead"><h2>Dữ liệu</h2></div><div class="card"><button class="soft" onclick="exportData()">Xuất bản sao lưu</button> <button class="soft" onclick="document.getElementById('importFile').click()">Nhập bản sao lưu</button><input id="importFile" type="file" accept="application/json" hidden onchange="importData(event)"><p class="muted">Bạn nên xuất bản sao lưu định kỳ để tránh mất dữ liệu khi xóa dữ liệu trình duyệt.</p></div>
+</section>
+</main>
+<nav>
+ <button class="active" data-page="home" onclick="showPage('home')"><b>⌂</b>Trang chủ</button>
+ <button data-page="tasks" onclick="showPage('tasks')"><b>☷</b>Công việc</button>
+ <button data-page="schedule" onclick="showPage('schedule')"><b>▦</b>Lịch tuần</button>
+ <button data-page="focus" onclick="showPage('focus')"><b>◷</b>Tập trung</button>
+ <button data-page="goals" onclick="showPage('goals')"><b>◎</b>Mục tiêu</button>
+ <button data-page="stats" onclick="showPage('stats')"><b>▥</b>Thống kê</button>
+</nav>
+<script>
+const $=id=>document.getElementById(id), today=()=>new Date().toISOString().slice(0,10);
+let data=JSON.parse(localStorage.getItem('mytime_data')||'{"tasks":[],"events":[],"goals":[]}');
+let selectedDay=(new Date().getDay()+6)%7, timerSeconds=1500, timerInitial=1500, timerInterval=null, timerRunning=false;
+const days=['Thứ Hai','Thứ Ba','Thứ Tư','Thứ Năm','Thứ Sáu','Thứ Bảy','Chủ Nhật'];
+function save(){localStorage.setItem('mytime_data',JSON.stringify(data));render()}
+function showPage(p){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));$(p).classList.add('active');document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===p));render()}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function taskHTML(t){return `<div class="item"><button class="check ${t.done?'done':''}" onclick="toggleTask('${t.id}')">${t.done?'✓':''}</button><div class="itemmain"><div class="itemtitle ${t.done?'done':''}">${esc(t.name)}</div><div class="meta">${t.date||''} ${t.time||''} · ${esc(t.category||'Khác')}</div></div><button class="smallbtn" onclick="deleteTask('${t.id}')">×</button></div>`}
+function render(){
+ let todays=data.tasks.filter(t=>t.date===today()), done=todays.filter(t=>t.done).length, pct=todays.length?Math.round(done/todays.length*100):0;
+ $('taskCount').textContent=`${done}/${todays.length}`;$('percent').textContent=pct+'%';$('progressBar').style.width=pct+'%';
+ $('homeTasks').innerHTML=todays.length?todays.map(taskHTML).join(''):'<div class="empty">Chưa có công việc. Hãy thêm việc đầu tiên nhé!</div>';
+ $('allTasks').innerHTML=data.tasks.length?[...data.tasks].sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time)).map(taskHTML).join(''):'<div class="empty">Danh sách đang trống.</div>';
+ let ev=data.events.filter(e=>e.day===selectedDay).sort((a,b)=>a.start.localeCompare(b.start));
+ $('homeSchedule').innerHTML=data.events.filter(e=>e.day===(new Date().getDay()+6)%7).sort((a,b)=>a.start.localeCompare(b.start)).map(e=>`<div class="item"><div class="itemmain"><div class="itemtitle">${esc(e.name)}</div><div class="meta">${e.start} – ${e.end}</div></div></div>`).join('')||'<div class="empty">Chưa có lịch cố định hôm nay.</div>';
+ $('eventsList').innerHTML=ev.length?ev.map(e=>`<div class="item"><div class="itemmain"><div class="itemtitle">${esc(e.name)}</div><div class="meta">${e.start} – ${e.end}</div></div><button class="smallbtn" onclick="deleteEvent('${e.id}')">×</button></div>`).join(''):'<div class="empty">Chưa có hoạt động trong ngày này.</div>';
+ $('dayGrid').innerHTML=days.map((d,i)=>`<button class="day ${i===selectedDay?'sel':''}" onclick="selectedDay=${i};render()">${d.replace('Thứ ','T')}</button>`).join('');$('scheduleDay').textContent=days[selectedDay];
+ $('goalsList').innerHTML=data.goals.length?data.goals.map(g=>`<div class="goal"><div class="goalhead"><span>${esc(g.name)}</span><span>${g.value}/${g.target}</span></div><div class="progress"><span style="width:${Math.min(100,g.value/g.target*100)}%"></span></div><div style="margin-top:7px"><button class="soft" onclick="bumpGoal('${g.id}')">+ Hoàn thành 1</button><button class="smallbtn" onclick="deleteGoal('${g.id}')">×</button></div></div>`).join(''):'<div class="empty">Chưa có mục tiêu nào.</div>';
+ $('totalStat').textContent=data.tasks.length;$('doneStat').textContent=data.tasks.filter(t=>t.done).length;$('statsGoals').innerHTML=data.goals.map(g=>`<div class="goal"><div class="goalhead"><span>${esc(g.name)}</span><span>${Math.min(100,Math.round(g.value/g.target*100))}%</span></div><div class="progress"><span style="width:${Math.min(100,g.value/g.target*100)}%"></span></div></div>`).join('')||'<div class="empty">Thêm mục tiêu để xem thống kê.</div>';
+}
+function addTask(){let name=$('taskInput').value.trim();if(!name)return alert('Bạn hãy nhập tên công việc.');data.tasks.push({id:crypto.randomUUID(),name,date:$('taskDate').value||today(),time:$('taskTime').value,category:$('taskCategory').value,done:false});$('taskInput').value='';save()}
+function toggleTask(id){let t=data.tasks.find(x=>x.id===id);t.done=!t.done;save()}
+function deleteTask(id){data.tasks=data.tasks.filter(x=>x.id!==id);save()}
+function clearDone(){data.tasks=data.tasks.filter(x=>!x.done);save()}
+function addEvent(){let name=$('eventName').value.trim();if(!name)return alert('Nhập tên hoạt động.');let start=$('eventStart').value,end=$('eventEnd').value;if(end<=start)return alert('Giờ kết thúc cần sau giờ bắt đầu.');data.events.push({id:crypto.randomUUID(),day:selectedDay,name,start,end});$('eventName').value='';save()}
+function deleteEvent(id){data.events=data.events.filter(x=>x.id!==id);save()}
+function addGoal(){let name=$('goalInput').value.trim(),target=+$('goalTarget').value;if(!name||target<1)return alert('Nhập tên và số mục tiêu hợp lệ.');data.goals.push({id:crypto.randomUUID(),name,target,value:0});$('goalInput').value='';save()}
+function bumpGoal(id){let g=data.goals.find(x=>x.id===id);g.value=Math.min(g.target,g.value+1);save()}
+function deleteGoal(id){data.goals=data.goals.filter(x=>x.id!==id);save()}
+function setTimer(min,mode){clearInterval(timerInterval);timerRunning=false;timerInitial=min*60;timerSeconds=timerInitial;$('timerMode').textContent=mode.toUpperCase();$('timerToggle').textContent='Bắt đầu';updateClock()}
+function updateClock(){$('clock').textContent=String(Math.floor(timerSeconds/60)).padStart(2,'0')+':'+String(timerSeconds%60).padStart(2,'0')}
+function toggleTimer(){if(timerRunning){clearInterval(timerInterval);timerRunning=false;$('timerToggle').textContent='Tiếp tục'}else{timerRunning=true;$('timerToggle').textContent='Tạm dừng';timerInterval=setInterval(()=>{timerSeconds--;updateClock();if(timerSeconds<=0){clearInterval(timerInterval);timerRunning=false;$('timerToggle').textContent='Bắt đầu';if(navigator.vibrate)navigator.vibrate([250,100,250]);alert('Đã hết giờ!');}},1000)}}
+function resetTimer(){clearInterval(timerInterval);timerRunning=false;timerSeconds=timerInitial;$('timerToggle').textContent='Bắt đầu';updateClock()}
+function exportData(){let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='my-time-backup.json';a.click();URL.revokeObjectURL(a.href)}
+function importData(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let d=JSON.parse(r.result);if(!Array.isArray(d.tasks)||!Array.isArray(d.events)||!Array.isArray(d.goals))throw 0;data=d;save();alert('Đã nhập dữ liệu.')}catch{alert('Tệp sao lưu không hợp lệ.')}};r.readAsText(f)}
+$('todayDate').textContent=new Date().toLocaleDateString('vi-VN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+$('greeting').textContent=(new Date().getHours()<11?'Chào buổi sáng':new Date().getHours()<18?'Chào buổi chiều':'Chào buổi tối')+' 👋';
+$('taskDate').value=today();render();updateClock();
+if('serviceWorker' in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+</script>
+</body></html>

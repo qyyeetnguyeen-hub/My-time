@@ -1,0 +1,9 @@
+{
+  "name": "MY TIME – Quản lý thời gian",
+  "short_name": "MY TIME",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f4f6fa",
+  "theme_color": "#101827",
+  "lang": "vi"
+}

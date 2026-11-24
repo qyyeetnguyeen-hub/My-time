@@ -1,0 +1,20 @@
+MY TIME – Hướng dẫn cài trên iPhone 11
+
+GÓI NÀY LÀ PWA (ứng dụng web có thể thêm vào Màn hình chính), không phải file IPA/App Store.
+
+Cách chạy thử:
+1. Giải nén gói.
+2. Mở index.html bằng trình duyệt để thử giao diện. Một số tính năng cài đặt/offline chỉ hoạt động khi được đưa lên máy chủ HTTPS.
+
+Cách cài thành ứng dụng trên iPhone:
+1. Đưa toàn bộ 3 tệp index.html, manifest.webmanifest và sw.js lên một dịch vụ lưu trữ web có HTTPS (ví dụ GitHub Pages).
+2. Mở đường dẫn HTTPS của trang bằng Safari trên iPhone.
+3. Nhấn nút Chia sẻ -> Thêm vào MH chính (Add to Home Screen) -> Thêm.
+4. Mở biểu tượng MY TIME ngoài Màn hình chính.
+
+Lưu ý:
+- Dữ liệu lưu trên trình duyệt/thiết bị bằng localStorage; không tự đồng bộ sang thiết bị khác.
+- Nên vào Thống kê -> Xuất bản sao lưu định kỳ.
+- Bộ đếm Pomodoro hoạt động khi trang đang mở; iOS có thể tạm dừng trang khi ứng dụng chạy nền.
+- Bản này chưa có thông báo đẩy/lịch nhắc nền đáng tin cậy, tài khoản hay đồng bộ đám mây.
+- Không xóa dữ liệu Safari/trang web nếu chưa xuất bản sao lưu.
